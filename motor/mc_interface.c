@@ -2300,6 +2300,9 @@ static void update_override_limits(volatile motor_if_state_t *motor, volatile mc
 	const float l_current_max_tmp = conf->l_current_max * conf->l_current_max_scale;
 
 	// Temperature MOSFET
+
+    /* CED: disable MOSFET temp, because it is not mounted at the moment.
+
 	float lo_min_mos = l_current_min_tmp;
 	float lo_max_mos = l_current_max_tmp;
 	if (motor->m_temp_fet < (conf->l_temp_fet_start + 0.1)) {
@@ -2324,6 +2327,8 @@ static void update_override_limits(volatile motor_if_state_t *motor, volatile mc
 			lo_max_mos = SIGN(l_current_max_tmp) * maxc;
 		}
 	}
+
+    */
 
 	// Temperature MOTOR
 	float lo_min_mot = l_current_min_tmp;
@@ -2473,8 +2478,13 @@ static void update_override_limits(volatile motor_if_state_t *motor, volatile mc
 		}
 	}
 
-	float lo_max = utils_min_abs(lo_max_mos, lo_max_mot);
-	float lo_min = utils_min_abs(lo_min_mos, lo_min_mot);
+
+	// float lo_max = utils_min_abs(lo_max_mos, lo_max_mot);
+	// float lo_min = utils_min_abs(lo_min_mos, lo_min_mot);
+
+    // CED
+	float lo_max = lo_max_mot;
+	float lo_min = lo_min_mot;
 
 	lo_max = utils_min_abs(lo_max, lo_max_rpm);
 	lo_max = utils_min_abs(lo_max, lo_min_rpm);
