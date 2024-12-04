@@ -18,7 +18,9 @@
     */
 
 #include "app.h"
+#include "ced/hw_ced_core.h"
 #include "ch.h"
+#include "core_cmInstr.h"
 #include "hal.h"
 
 // Some useful includes
@@ -27,6 +29,8 @@
 #include "encoder/encoder.h"
 #include "hw.h"
 #include "mc_interface.h"
+#include "pal.h"
+#include "spi_lld.h"
 #include "terminal.h"
 #include "timeout.h"
 #include "utils_math.h"
@@ -43,8 +47,9 @@ static THD_WORKING_AREA(my_thread_wa, 1024);
 
 // Private functions
 static void pwm_callback(void);
-static void set_cs_low(int argc, const char **argv);
-static void set_cs_high(int argc, const char **argv);
+
+static void ced_adc(int argc, const char **argv);
+static void ced_current(int argc, const char **argv);
 
 // Private variables
 static volatile bool stop_now = true;
@@ -60,18 +65,17 @@ void app_custom_start(void) {
                     NULL);
 
   // Terminal commands for the VESC Tool terminal can be registered.
-  terminal_register_command_callback("spi_cs_low", "Set DRV SPI CS low", "",
-                                     set_cs_low);
-  terminal_register_command_callback("spi_cs_high", "Set DRV SPI CS high", "",
-                                     set_cs_high);
+  terminal_register_command_callback("ced_adc", "read input voltage", "",
+                                     ced_adc);
+
+  terminal_register_command_callback("ced_current", "read input voltage", "",
+                                     ced_current);
 }
 
 // Called when the custom application is stopped. Stop our threads
 // and release callbacks.
 void app_custom_stop(void) {
   mc_interface_set_pwm_callback(0);
-  terminal_unregister_callback(set_cs_low);
-  terminal_unregister_callback(set_cs_high);
 
   stop_now = true;
   while (is_running) {
@@ -124,16 +128,18 @@ static void pwm_callback(void) {
   // Called for every control iteration in interrupt context.
 }
 
-// Callback function for the terminal command with arguments.
-static void set_cs_low(int argc, const char **argv) {
+static void ced_adc(int argc, const char **argv) {
   (void)argc;
   (void)argv;
-  palClearPad(DRV8301_CS_GPIO, DRV8301_CS_PIN);
-  commands_printf("Set CS low");
+  for (int i = 0; i < HW_ADC_CHANNELS; i++) {
+    commands_printf("adc[%d] voltage: %.3f", i, (double)ADC_VOLTS(i));
+  }
 }
-static void set_cs_high(int argc, const char **argv) {
+
+static void ced_current(int argc, const char **argv) {
   (void)argc;
   (void)argv;
-  palSetPad(DRV8301_CS_GPIO, DRV8301_CS_PIN);
-  commands_printf("Set CS high");
+  commands_printf("curr1: %.4f A", (double)GET_CURRENT1());
+  commands_printf("curr2: %.4f A", (double)GET_CURRENT2());
+  commands_printf("curr3: %.4f A", (double)GET_CURRENT3());
 }

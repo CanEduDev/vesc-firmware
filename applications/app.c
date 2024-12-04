@@ -72,15 +72,15 @@ void app_set_configuration(app_configuration *conf) {
 #endif
 	}
 
-	if (!conf_general_permanent_nrf_found) {
-		nrf_driver_stop();
-	}
+	//if (!conf_general_permanent_nrf_found) {
+	//	nrf_driver_stop();
+	//}
 
 #if CAN_ENABLE
-	comm_can_set_baud(conf->can_baud_rate);
+	//comm_can_set_baud(conf->can_baud_rate);
 #endif
 
-	imu_init(&conf->imu_conf);
+//	imu_init(&conf->imu_conf);
 
 	if (app_changed) {
 		if (appconf.app_to_use != APP_PPM &&
@@ -141,7 +141,7 @@ void app_set_configuration(app_configuration *conf) {
 		case APP_CUSTOM:
 #ifdef APP_CUSTOM_TO_USE
 			hw_stop_i2c();
-			app_adc_start(false);
+			//app_ppm_start();
 			app_uartcomm_start(UART_PORT_COMM_HEADER);
 			app_custom_start();
 #endif

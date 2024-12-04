@@ -18,7 +18,6 @@
  */
 
 #include "conf_general.h"
-#include "trampa/vesc6/hw_60_core.h"
 #ifdef HW_HAS_DRV8301
 
 #include "ch.h"
@@ -77,17 +76,15 @@ void drv8301_init(void) {
   palSetPadMode(DRV8301_MISO_GPIO, DRV8301_MISO_PIN,
                 PAL_MODE_ALTERNATE(GPIO_AF_SPI3) | PAL_STM32_OSPEED_HIGHEST);
 
-  ENABLE_GATE();
-
   spiStart(&SPID3, &spi_cfg);
 
   chThdSleepMilliseconds(100);
 
   // Disable OC
-  // drv8301_write_reg(2, 0x0430);
-  // drv8301_write_reg(2, 0x0430);
+  drv8301_write_reg(2, 0x0430);
+  drv8301_write_reg(2, 0x0430);
 
-  // drv8301_set_current_amp_gain(CURRENT_AMP_GAIN);
+  drv8301_set_current_amp_gain(CURRENT_AMP_GAIN);
 
   terminal_register_command_callback(
       "drv8301_read_reg", "Read a register from the DRV8301 and print it.",
@@ -259,24 +256,20 @@ unsigned int drv8301_read_reg(int reg) {
   out |= (reg & 0x0F) << 11;
   out |= 0x807F;
 
-  uint16_t res;
-  if (reg != 0) {
-    // spi_begin();
-    // spi_exchange(out);
-    // spi_end();
-    spiSelect(&SPID3);
-    spiExchange(&SPID3, 1, &out, &res);
-    spiUnselect(&SPID3);
-  }
-
-  res = 0;
+  // spi_begin();
+  // spi_exchange(out);
+  // spi_end();
+  spiSelect(&SPID3);
+  spiSend(&SPID3, 1, &out);
+  spiUnselect(&SPID3);
 
   for (volatile int i = 0; i < 10; i++) {
     __NOP();
   }
 
+  uint16_t res;
   spiSelect(&SPID3);
-  spiExchange(&SPID3, 1, &out, &res);
+  spiReceive(&SPID3, 1, &res);
   spiUnselect(&SPID3);
   // spi_begin();
   // uint16_t res = spi_exchange(0xFFFF);
