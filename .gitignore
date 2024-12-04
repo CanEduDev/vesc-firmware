@@ -17,3 +17,7 @@ workspace.code-workspace
 *.pro.shared
 
 .vscode
+
+.venv
+compile_commands.json
+.cache
