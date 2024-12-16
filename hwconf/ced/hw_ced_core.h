@@ -29,6 +29,11 @@
 #define HW_MAJOR 1
 #define HW_MINOR 0
 
+#define HW_DEAD_TIME_NSEC 750.0 // Dead time
+#define MCCONF_FOC_DT_US 0.75
+
+#define HW_HAS_NO_CAN
+
 // HW properties
 #define HW_HAS_DRV8301
 #define HW_HAS_3_SHUNTS
@@ -105,7 +110,8 @@
 
 // Component parameters (can be overridden)
 #ifndef V_REG
-#define V_REG 3.3
+#define V_REG (1.21 / ((float)ADC_Value[ADC_IND_VREFINT] / 4095.0))
+// #define V_REG 3.3
 #endif
 #ifndef VIN_R1
 #define VIN_R1 39000.0
