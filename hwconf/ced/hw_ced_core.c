@@ -107,14 +107,14 @@ void hw_setup_adc_channels(void) {
   // ADC1 regular channels
   ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, t_samp);
   ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 2, t_samp);
-  // ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 3, t_samp);
+  ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 3, t_samp);
   ADC_RegularChannelConfig(ADC1, ADC_Channel_14, 4, t_samp);
   ADC_RegularChannelConfig(ADC1, ADC_Channel_Vrefint, 5, t_samp);
 
   // ADC2 regular channels
   ADC_RegularChannelConfig(ADC2, ADC_Channel_11, 1, t_samp);
   ADC_RegularChannelConfig(ADC2, ADC_Channel_1, 2, t_samp);
-  // ADC_RegularChannelConfig(ADC2, ADC_Channel_6, 3, t_samp);
+  ADC_RegularChannelConfig(ADC2, ADC_Channel_6, 3, t_samp);
   ADC_RegularChannelConfig(ADC2, ADC_Channel_15, 4, t_samp);
   ADC_RegularChannelConfig(ADC2, ADC_Channel_0, 5, t_samp);
 
