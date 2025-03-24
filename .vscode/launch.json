@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug CED",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/ced.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "openocd",
+            "configFiles": [
+                "ced-openocd.cfg"
+            ],
+            "svdFile": "STM32F405.svd",
+            "device": "STM32F405",
+            "gdbPath": "tools/bin/arm-none-eabi-gdb",
+        },
+    ]
+}
