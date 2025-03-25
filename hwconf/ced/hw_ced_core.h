@@ -125,9 +125,11 @@
 #define CURRENT_SHUNT_RES 0.0005
 #endif
 
+#define WORKAROUND_ADC_IND_VIN_SENS 1000.0F
+
 // Input voltage
 #define GET_INPUT_VOLTAGE()                                                    \
-  ((V_REG / 4095.0) * (float)ADC_Value[ADC_IND_VIN_SENS] *                     \
+  ((V_REG / 4095.0) * WORKAROUND_ADC_IND_VIN_SENS *                            \
    ((VIN_R1 + VIN_R2) / VIN_R2))
 
 // NTC Termistors
@@ -234,7 +236,8 @@
 #define ADC_V_L1 ADC_Value[ADC_IND_SENS1]
 #define ADC_V_L2 ADC_Value[ADC_IND_SENS2]
 #define ADC_V_L3 ADC_Value[ADC_IND_SENS3]
-#define ADC_V_ZERO (ADC_Value[ADC_IND_VIN_SENS] / 2)
+// #define ADC_V_ZERO (WORKAROUND_ADC_IND_VIN_SENS / 2)
+#define ADC_V_ZERO (ADC_V_L1 + ADC_V_L2 + ADC_V_L3)
 
 // Macros
 #define READ_HALL1() palReadPad(HW_HALL_ENC_GPIO1, HW_HALL_ENC_PIN1)
