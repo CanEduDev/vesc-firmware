@@ -2299,6 +2299,11 @@ static void update_override_limits(volatile motor_if_state_t *motor, volatile mc
 	const float l_current_min_tmp = conf->l_current_min * conf->l_current_min_scale;
 	const float l_current_max_tmp = conf->l_current_max * conf->l_current_max_scale;
 
+
+    // CED: hardcode MOSFET temp
+    motor->m_temp_fet = 25.0F;
+    // END CED
+
 	// Temperature MOSFET
 	float lo_min_mos = l_current_min_tmp;
 	float lo_max_mos = l_current_max_tmp;
