@@ -34,6 +34,11 @@
 
 #define HW_HAS_NO_CAN
 
+#define APPCONF_APP_TO_USE APP_CUSTOM
+#define APP_CUSTOM_TO_USE "app_ced.c"
+
+#define APPCONF_PPM_CTRL_TYPE PPM_CTRL_TYPE_DUTY
+
 // HW properties
 #define HW_HAS_DRV8301
 #define HW_HAS_3_SHUNTS
@@ -212,14 +217,14 @@
 // SPI pins
 #define HW_SPI_DEV SPID1
 #define HW_SPI_GPIO_AF GPIO_AF_SPI1
-#define HW_SPI_PORT_NSS GPIOB
-#define HW_SPI_PIN_NSS 11
+#define HW_SPI_PORT_NSS GPIOA
+#define HW_SPI_PIN_NSS 4
 #define HW_SPI_PORT_SCK GPIOA
 #define HW_SPI_PIN_SCK 5
-#define HW_SPI_PORT_MOSI GPIOA
-#define HW_SPI_PIN_MOSI 7
 #define HW_SPI_PORT_MISO GPIOA
 #define HW_SPI_PIN_MISO 6
+#define HW_SPI_PORT_MOSI GPIOA
+#define HW_SPI_PIN_MOSI 7
 
 // SPI for DRV8301
 #define DRV8301_MOSI_GPIO GPIOC
